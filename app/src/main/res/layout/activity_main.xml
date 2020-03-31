@@ -55,6 +55,8 @@
         <com.bawei.dianshang10.FlowLayout
             android:id="@+id/flowlay"
             android:layout_width="match_parent"
+            app:textSize="24sp"
+            app:color="#9C27B0"
             android:layout_height="0dp"
             android:layout_weight="8.5"/>
 

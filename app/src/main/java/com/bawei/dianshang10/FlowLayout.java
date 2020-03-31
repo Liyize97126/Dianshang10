@@ -1,7 +1,9 @@
 package com.bawei.dianshang10;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
+
 /**
  * 自定义布局类（流式布局）
  */
 public class FlowLayout extends FrameLayout {
     //定义
     private OnFlowClickListener onFlowClickListener;
+    private float textSize;
+    private int color;
     //封装
     public void setOnFlowClickListener(OnFlowClickListener onFlowClickListener) {
         this.onFlowClickListener = onFlowClickListener;
@@ -27,9 +33,23 @@ public class FlowLayout extends FrameLayout {
     }
     public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initAttrs(attrs);
     }
     public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initAttrs(attrs);
+    }
+    //初始化
+    private void initAttrs(AttributeSet attrs){
+        //context通过调用obtainStyledAttributes方法来获取一个TypeArray，然后由该TypeArray来对属性进行设置
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.flow);
+        //判断是否为空
+        if(typedArray != null){
+            //获取文字大小
+            textSize = typedArray.getDimension(R.styleable.flow_textSize,20);
+            //获取文字颜色
+            color = typedArray.getColor(R.styleable.flow_color, Color.GRAY);
+        }
     }
     //测量
     @Override
@@ -77,6 +97,9 @@ public class FlowLayout extends FrameLayout {
         TextView textView = (TextView) View.inflate(getContext(), R.layout.item_view, null);
         //设置文本
         textView.setText(wenben);
+        //设置自定义属性
+        textView.setTextSize(COMPLEX_UNIT_SP,textSize);
+        textView.setTextColor(color);
         //传值
         textView.setTag(wenben);
         //设置点击事件
